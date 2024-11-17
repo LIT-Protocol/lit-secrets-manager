@@ -143,7 +143,7 @@ export default function LandingPage() {
             </span>
           </h2>
           <p className="text-xl mb-8 text-gray-700 leading-relaxed">
-            The decentralized secret manager powered by Lit Protocol's encryption network.
+            The decentralized secret manager powered by Lit Protocol encryption network.
             Store, manage, and share your sensitive data with confidence.
           </p>
           <ConnectButton 
