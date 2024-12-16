@@ -1,42 +1,45 @@
-"use client"
-import React, { useState, useEffect } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 import { Plus, Search, Copy, Trash2 } from "lucide-react";
 
 const SecretsListPage = () => {
   const [secrets, setSecrets] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [copyStatus, setCopyStatus] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [copyStatus, setCopyStatus] = useState("");
 
   useEffect(() => {
-    const savedSecrets = localStorage.getItem('secretsHistory');
+    const savedSecrets = localStorage.getItem("secretsHistory");
     if (savedSecrets) {
       setSecrets(JSON.parse(savedSecrets));
     }
   }, []);
 
-  const deleteSecret = (id) => {
+  const deleteSecret = id => {
     const updatedSecrets = secrets.filter(secret => secret.id !== id);
     setSecrets(updatedSecrets);
-    localStorage.setItem('secretsHistory', JSON.stringify(updatedSecrets));
+    localStorage.setItem("secretsHistory", JSON.stringify(updatedSecrets));
   };
 
   const copyToClipboard = async (text, label) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopyStatus(`Copied ${label}!`);
-      setTimeout(() => setCopyStatus(''), 2000);
+      setTimeout(() => setCopyStatus(""), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
-  const filteredSecrets = secrets.filter(secret =>
-    secret.litActionCid.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    JSON.stringify(secret.secretObject).toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (secret.secretObject?.accessControlConditions &&
-      JSON.stringify(secret.secretObject.accessControlConditions).toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (secret.secretObject?.litNetwork &&
-      secret.secretObject.litNetwork.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredSecrets = secrets.filter(
+    secret =>
+      secret.litActionCid.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      JSON.stringify(secret.secretObject).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (secret.secretObject?.accessControlConditions &&
+        JSON.stringify(secret.secretObject.accessControlConditions)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())) ||
+      (secret.secretObject?.litNetwork &&
+        secret.secretObject.litNetwork.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const SecretCard = ({ secret }) => (
@@ -64,7 +67,7 @@ const SecretsListPage = () => {
               {secret.litActionCid}
             </div>
             <button
-              onClick={() => copyToClipboard(secret.litActionCid, 'CID')}
+              onClick={() => copyToClipboard(secret.litActionCid, "CID")}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 hover:text-gray-900"
             >
               <Copy className="h-4 w-4" />
@@ -79,7 +82,7 @@ const SecretsListPage = () => {
               {JSON.stringify(secret.secretObject, null, 2)}
             </pre>
             <button
-              onClick={() => copyToClipboard(JSON.stringify(secret.secretObject), 'secret object')}
+              onClick={() => copyToClipboard(JSON.stringify(secret.secretObject), "secret object")}
               className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
             >
               <Copy className="h-4 w-4" />
@@ -95,7 +98,12 @@ const SecretsListPage = () => {
                 {JSON.stringify(secret.secretObject.accessControlConditions, null, 2)}
               </pre>
               <button
-                onClick={() => copyToClipboard(JSON.stringify(secret.secretObject.accessControlConditions), 'access control conditions')}
+                onClick={() =>
+                  copyToClipboard(
+                    JSON.stringify(secret.secretObject.accessControlConditions),
+                    "access control conditions"
+                  )
+                }
                 className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
               >
                 <Copy className="h-4 w-4" />
@@ -112,7 +120,7 @@ const SecretsListPage = () => {
                 {secret.secretObject.litNetwork}
               </div>
               <button
-                onClick={() => copyToClipboard(secret.secretObject.litNetwork, 'network')}
+                onClick={() => copyToClipboard(secret.secretObject.litNetwork, "network")}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 hover:text-gray-900"
               >
                 <Copy className="h-4 w-4" />
@@ -151,7 +159,7 @@ const SecretsListPage = () => {
               type="text"
               placeholder="Search secrets..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             />
             <Search className="h-5 w-5 text-gray-800 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -168,14 +176,14 @@ const SecretsListPage = () => {
         {/* Secrets Grid */}
         {filteredSecrets.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-            {filteredSecrets.map((secret) => (
+            {filteredSecrets.map(secret => (
               <SecretCard key={secret.id} secret={secret} />
             ))}
           </div>
         ) : (
           <div className="text-center py-12">
             <div className="text-gray-900">
-              {searchTerm ? 'No secrets found matching your search.' : 'No secrets created yet.'}
+              {searchTerm ? "No secrets found matching your search." : "No secrets created yet."}
             </div>
             <a
               href="/createSecrets"

@@ -1,6 +1,6 @@
-"use client"
-import { LockIcon, ShieldIcon, KeyIcon, ServerIcon, Plus } from 'lucide-react'
-import { useRouter } from 'next/navigation';
+"use client";
+import { LockIcon, ShieldIcon, KeyIcon, ServerIcon, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -8,49 +8,57 @@ export default function LandingPage() {
   const features = [
     {
       title: "Encrypted Storage",
-      description: "Your secrets are encrypted using Lit Protocol's advanced cryptographic network. Each secret is encrypted with unique access conditions that you define.",
-      icon: <LockIcon className="w-8 h-8 mb-4 text-orange-600" />
+      description:
+        "Your secrets are encrypted using Lit Protocol's advanced cryptographic network. Each secret is encrypted with unique access conditions that you define.",
+      icon: <LockIcon className="w-8 h-8 mb-4 text-orange-600" />,
     },
     {
       title: "Decentralized Security",
-      description: "Leverage Lit Protocol's decentralized node network for encryption and access control. No single point of failure and no central authority.",
-      icon: <ShieldIcon className="w-8 h-8 mb-4 text-orange-600" />
+      description:
+        "Leverage Lit Protocol's decentralized node network for encryption and access control. No single point of failure and no central authority.",
+      icon: <ShieldIcon className="w-8 h-8 mb-4 text-orange-600" />,
     },
     {
       title: "Programmable Access",
-      description: "Define complex access conditions using Lit Actions. Control who can access your secrets based on wallet addresses, token ownership, or custom logic.",
-      icon: <KeyIcon className="w-8 h-8 mb-4 text-orange-600" />
+      description:
+        "Define complex access conditions using Lit Actions. Control who can access your secrets based on wallet addresses, token ownership, or custom logic.",
+      icon: <KeyIcon className="w-8 h-8 mb-4 text-orange-600" />,
     },
   ];
 
   const whyChooseItems = [
     {
       title: "Safe Encryption",
-      description: "Your secrets are protected using advanced cryptographic techniques that are resistant to attacks."
+      description:
+        "Your secrets are protected using advanced cryptographic techniques that are resistant to attacks.",
     },
     {
       title: "Conditional Access",
-      description: "Grant access to secrets based on on-chain conditions, NFT ownership, DAO membership, or custom criteria."
+      description:
+        "Grant access to secrets based on on-chain conditions, NFT ownership, DAO membership, or custom criteria.",
     },
     {
       title: "Cross-Chain Compatibility",
-      description: "Works seamlessly across multiple blockchain networks with unified access control."
-    }
+      description:
+        "Works seamlessly across multiple blockchain networks with unified access control.",
+    },
   ];
 
   const useCases = [
     {
       title: "Secure Key Management",
-      description: "Store API keys, private keys, and sensitive credentials with programmatic access control."
+      description:
+        "Store API keys, private keys, and sensitive credentials with programmatic access control.",
     },
     {
       title: "DAO Governance",
-      description: "Manage privileged access to DAO resources and sensitive organizational information."
+      description:
+        "Manage privileged access to DAO resources and sensitive organizational information.",
     },
     {
       title: "DApp Security",
-      description: "Protect user data and application secrets in decentralized applications."
-    }
+      description: "Protect user data and application secrets in decentralized applications.",
+    },
   ];
 
   return (
@@ -81,8 +89,8 @@ export default function LandingPage() {
             </span>
           </h2>
           <p className="text-xl mb-8 text-gray-700 leading-relaxed">
-            The decentralized secret manager powered by Lit Protocol encryption network.
-            Store, manage, and share your sensitive data with confidence.
+            The decentralized secret manager powered by Lit Protocol encryption network. Store,
+            manage, and share your sensitive data with confidence.
           </p>
           <a
             href="/createSecrets"
@@ -144,7 +152,8 @@ export default function LandingPage() {
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
             <p className="text-lg mb-8 opacity-90">
-              Join the growing community of developers and organizations securing their secrets with Lit Protocol.
+              Join the growing community of developers and organizations securing their secrets with
+              Lit Protocol.
             </p>
             <a
               href="/createSecrets"

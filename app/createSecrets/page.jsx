@@ -1,7 +1,7 @@
-"use client"
-import React, { useState, useEffect } from 'react'
+"use client";
+import React, { useState, useEffect } from "react";
 import { LitNodeClient, encryptString } from "@lit-protocol/lit-node-client";
-import { useNetwork } from '../contexts/NetworkContext';
+import { useNetwork } from "../contexts/NetworkContext";
 import { Copy, Trash2 } from "lucide-react";
 
 export default function Secrets() {
@@ -17,7 +17,7 @@ export default function Secrets() {
   const [encryptedHistory, setEncryptedHistory] = useState([]);
 
   useEffect(() => {
-    const savedHistory = localStorage.getItem('secretsHistory');
+    const savedHistory = localStorage.getItem("secretsHistory");
     if (savedHistory) {
       setEncryptedHistory(JSON.parse(savedHistory));
     }
@@ -33,31 +33,31 @@ export default function Secrets() {
     }
   };
 
-  const saveToHistory = (secretObject) => {
+  const saveToHistory = secretObject => {
     const newSecret = {
       id: Date.now(),
       timestamp: new Date().toISOString(),
       litActionCid,
-      secretObject
+      secretObject,
     };
 
     const updatedHistory = [...encryptedHistory, newSecret];
     setEncryptedHistory(updatedHistory);
-    localStorage.setItem('secretsHistory', JSON.stringify(updatedHistory));
+    localStorage.setItem("secretsHistory", JSON.stringify(updatedHistory));
   };
 
   const clearHistory = () => {
     setEncryptedHistory([]);
-    localStorage.removeItem('secretsHistory');
+    localStorage.removeItem("secretsHistory");
   };
 
-  const deleteHistoryItem = (id) => {
+  const deleteHistoryItem = id => {
     const updatedHistory = encryptedHistory.filter(item => item.id !== id);
     setEncryptedHistory(updatedHistory);
-    localStorage.setItem('secretsHistory', JSON.stringify(updatedHistory));
+    localStorage.setItem("secretsHistory", JSON.stringify(updatedHistory));
   };
 
-  const encryptKey = async (dataToEncrypt) => {
+  const encryptKey = async dataToEncrypt => {
     try {
       setIsLoading(true);
       setError("");
@@ -87,13 +87,12 @@ export default function Secrets() {
       const secretObject = {
         encryptedData: ciphertext,
         dataToEncryptHash,
-        accessControlConditions,  // Include access control conditions
-        litNetwork: network       // Include network information
+        accessControlConditions, // Include access control conditions
+        litNetwork: network, // Include network information
       };
 
       setCurrentSecret(secretObject);
       saveToHistory(secretObject);
-
     } catch (err) {
       setError("Failed to encrypt: " + err.message);
     } finally {
@@ -108,7 +107,7 @@ export default function Secrets() {
         setError("");
         const litNodeClient = new LitNodeClient({
           litNetwork: network,
-          debug: false
+          debug: false,
         });
         await litNodeClient.connect();
         setLitNodeClient(litNodeClient);
@@ -148,14 +147,12 @@ export default function Secrets() {
 
           <div className="p-6 space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
-                Lit Action CID
-              </label>
+              <label className="block text-sm font-medium text-gray-900 mb-2">Lit Action CID</label>
               <input
                 type="text"
                 placeholder="Enter Lit Action CID..."
                 value={litActionCid}
-                onChange={(e) => setLitActionCid(e.target.value)}
+                onChange={e => setLitActionCid(e.target.value)}
                 className="w-full p-3 border border-orange-200 rounded focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none text-gray-900"
               />
             </div>
@@ -167,7 +164,7 @@ export default function Secrets() {
               <textarea
                 placeholder="Enter text to encrypt..."
                 value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
+                onChange={e => setInputText(e.target.value)}
                 className="w-full p-3 border border-orange-200 rounded focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none text-gray-900"
                 rows="3"
               />
@@ -177,14 +174,30 @@ export default function Secrets() {
               onClick={() => encryptKey(inputText)}
               disabled={!inputText || isLoading}
               className={`w-full bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded transition-colors duration-200 font-medium ${
-                !inputText || isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                !inputText || isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Processing...
                 </span>
@@ -220,7 +233,9 @@ export default function Secrets() {
                       {JSON.stringify(currentSecret, null, 2)}
                     </pre>
                     <button
-                      onClick={() => copyToClipboard(JSON.stringify(currentSecret), 'secret object')}
+                      onClick={() =>
+                        copyToClipboard(JSON.stringify(currentSecret), "secret object")
+                      }
                       className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
                       title="Copy secret object"
                     >
@@ -246,8 +261,11 @@ export default function Secrets() {
               </button>
             </div>
             <div className="p-6 space-y-6">
-              {encryptedHistory.map((item) => (
-                <div key={item.id} className="bg-orange-50 p-4 rounded-lg border border-orange-200 relative">
+              {encryptedHistory.map(item => (
+                <div
+                  key={item.id}
+                  className="bg-orange-50 p-4 rounded-lg border border-orange-200 relative"
+                >
                   <button
                     onClick={() => deleteHistoryItem(item.id)}
                     className="absolute top-2 right-2 text-orange-800 hover:text-orange-900 transition-colors duration-200"

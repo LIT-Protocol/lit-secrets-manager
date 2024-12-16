@@ -1,16 +1,16 @@
 "use client";
 
-import React from 'react';
-import { useNetwork } from '../contexts/NetworkContext';
+import React from "react";
+import { useNetwork } from "../contexts/NetworkContext";
 
 // Using string literals for network values as required by LitNodeClient
 const NETWORKS = {
-  DATIL_DEV: 'datil-dev',
-  DATIL_TEST: 'datil-test',
-  DATIL: 'datil'
+  DATIL_DEV: "datil-dev",
+  DATIL_TEST: "datil-test",
+  DATIL: "datil",
 } as const;
 
-type NetworkType = typeof NETWORKS[keyof typeof NETWORKS];
+type NetworkType = (typeof NETWORKS)[keyof typeof NETWORKS];
 
 export const NetworkSelector = () => {
   const { network, setNetwork } = useNetwork();
