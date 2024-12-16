@@ -1,14 +1,16 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import { LitNodeClient, encryptString } from "@lit-protocol/lit-node-client";
-import { LitNetwork } from "@lit-protocol/constants";
+import { useNetwork } from '../contexts/NetworkContext';
 import { Copy, Trash2 } from "lucide-react";
 
 export default function Secrets() {
+  const { network } = useNetwork();
   const [litNodeClient, setLitNodeClient] = useState();
   const [currentSecret, setCurrentSecret] = useState(null);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isNetworkChanging, setIsNetworkChanging] = useState(false);
   const [error, setError] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
   const [litActionCid, setLitActionCid] = useState("");
@@ -100,19 +102,23 @@ export default function Secrets() {
   useEffect(() => {
     const init = async () => {
       try {
+        setIsNetworkChanging(true);
+        setError("");
         const litNodeClient = new LitNodeClient({
-          litNetwork: LitNetwork.DatilDev,
+          litNetwork: network,
           debug: false
         });
         await litNodeClient.connect();
         setLitNodeClient(litNodeClient);
       } catch (err) {
         setError("Failed to initialize: " + err.message);
+      } finally {
+        setIsNetworkChanging(false);
       }
     };
 
     init();
-  }, []);
+  }, [network]);
 
   const ResultBox = ({ title, content, label }) => (
     <div className="mb-4">
@@ -188,6 +194,12 @@ export default function Secrets() {
             {error && (
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
                 {error}
+              </div>
+            )}
+
+            {isNetworkChanging && (
+              <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-700">
+                Connecting to new network...
               </div>
             )}
 
