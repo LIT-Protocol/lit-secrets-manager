@@ -1,10 +1,11 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import { LitNodeClient, encryptString } from "@lit-protocol/lit-node-client";
-import { LitNetwork } from "@lit-protocol/constants";
+import { useNetwork } from '../contexts/NetworkContext';
 import { Copy, Trash2 } from "lucide-react";
 
 export default function Secrets() {
+  const { network } = useNetwork();
   const [litNodeClient, setLitNodeClient] = useState();
   const [currentSecret, setCurrentSecret] = useState(null);
   const [inputText, setInputText] = useState("");
@@ -104,9 +105,7 @@ export default function Secrets() {
         setIsNetworkChanging(true);
         setError("");
         const litNodeClient = new LitNodeClient({
-          litNetwork: typeof window !== 'undefined'
-            ? localStorage.getItem('selectedNetwork') || LitNetwork.DatilDev
-            : LitNetwork.DatilDev,
+          litNetwork: network,
           debug: false
         });
         await litNodeClient.connect();
@@ -131,7 +130,7 @@ export default function Secrets() {
     return () => {
       window.removeEventListener('networkChange', handleNetworkChange);
     };
-  }, []);
+  }, [network]);
 
   const ResultBox = ({ title, content, label }) => (
     <div className="mb-4">

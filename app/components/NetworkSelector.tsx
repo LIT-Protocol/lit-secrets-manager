@@ -1,24 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { LitNetwork } from "@lit-protocol/constants";
+import { useNetwork } from '../contexts/NetworkContext';
 
 export const NetworkSelector = () => {
-  const [network, setNetwork] = useState(LitNetwork.DatilDev);
-
-  useEffect(() => {
-    // Initialize network from localStorage on mount
-    const storedNetwork = localStorage.getItem('selectedNetwork');
-    if (storedNetwork && Object.values(LitNetwork).includes(storedNetwork as LitNetwork)) {
-      setNetwork(storedNetwork as LitNetwork);
-    }
-  }, []);
+  const { network, setNetwork } = useNetwork();
 
   const handleNetworkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newNetwork = e.target.value as LitNetwork;
     setNetwork(newNetwork);
-    localStorage.setItem('selectedNetwork', newNetwork);
-    window.location.reload();
+    // Dispatch custom event for components that need to reinitialize
+    window.dispatchEvent(new CustomEvent('networkChange'));
   };
 
   return (
