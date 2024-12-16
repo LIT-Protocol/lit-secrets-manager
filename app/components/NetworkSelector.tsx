@@ -1,22 +1,24 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LitNetwork } from "@lit-protocol/constants";
 
 export const NetworkSelector = () => {
-  const [network, setNetwork] = useState(
-    typeof window !== 'undefined'
-      ? localStorage.getItem('selectedNetwork') || LitNetwork.DatilDev
-      : LitNetwork.DatilDev
-  );
+  const [network, setNetwork] = useState(LitNetwork.DatilDev);
+
+  useEffect(() => {
+    // Initialize network from localStorage on mount
+    const storedNetwork = localStorage.getItem('selectedNetwork');
+    if (storedNetwork && Object.values(LitNetwork).includes(storedNetwork as LitNetwork)) {
+      setNetwork(storedNetwork as LitNetwork);
+    }
+  }, []);
 
   const handleNetworkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newNetwork = e.target.value;
+    const newNetwork = e.target.value as LitNetwork;
     setNetwork(newNetwork);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('selectedNetwork', newNetwork);
-      window.location.reload(); // Reload to reinitialize LitNodeClient
-    }
+    localStorage.setItem('selectedNetwork', newNetwork);
+    window.location.reload();
   };
 
   return (
