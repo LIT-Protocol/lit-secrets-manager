@@ -40,7 +40,7 @@ export default function Secrets() {
       litActionCid,
       secretObject
     };
-    
+
     const updatedHistory = [...encryptedHistory, newSecret];
     setEncryptedHistory(updatedHistory);
     localStorage.setItem('secretsHistory', JSON.stringify(updatedHistory));
@@ -61,12 +61,12 @@ export default function Secrets() {
     try {
       setIsLoading(true);
       setError("");
-      
+
       const accessControlConditions = [
         {
           contractAddress: "ipfs://QmVhccY3ucrAsNx1LfGSMrYrBukDGKHgLtuCqygUzfTdTk",
           standardContractType: "LitAction",
-          chain: "ethereum", 
+          chain: "ethereum",
           method: "checkVal",
           parameters: [litActionCid],
           returnValueTest: {
@@ -83,10 +83,12 @@ export default function Secrets() {
         },
         litNodeClient
       );
-      
+
       const secretObject = {
         encryptedData: ciphertext,
-        dataToEncryptHash
+        dataToEncryptHash,
+        accessControlConditions,  // Include access control conditions
+        litNetwork: network       // Include network information
       };
 
       setCurrentSecret(secretObject);

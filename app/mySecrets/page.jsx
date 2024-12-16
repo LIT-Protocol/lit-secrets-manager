@@ -6,7 +6,7 @@ const SecretsListPage = () => {
   const [secrets, setSecrets] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [copyStatus, setCopyStatus] = useState('');
-  
+
   useEffect(() => {
     const savedSecrets = localStorage.getItem('secretsHistory');
     if (savedSecrets) {
@@ -30,9 +30,13 @@ const SecretsListPage = () => {
     }
   };
 
-  const filteredSecrets = secrets.filter(secret => 
+  const filteredSecrets = secrets.filter(secret =>
     secret.litActionCid.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    JSON.stringify(secret.secretObject).toLowerCase().includes(searchTerm.toLowerCase())
+    JSON.stringify(secret.secretObject).toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (secret.secretObject?.accessControlConditions &&
+      JSON.stringify(secret.secretObject.accessControlConditions).toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (secret.secretObject?.litNetwork &&
+      secret.secretObject.litNetwork.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const SecretCard = ({ secret }) => (
@@ -82,6 +86,40 @@ const SecretsListPage = () => {
             </button>
           </div>
         </div>
+
+        {secret.secretObject?.accessControlConditions && (
+          <div>
+            <label className="text-sm font-medium text-gray-900">Access Control Conditions</label>
+            <div className="mt-1 relative">
+              <pre className="bg-gray-50 rounded p-3 pr-10 font-mono text-sm break-all whitespace-pre-wrap text-gray-900">
+                {JSON.stringify(secret.secretObject.accessControlConditions, null, 2)}
+              </pre>
+              <button
+                onClick={() => copyToClipboard(JSON.stringify(secret.secretObject.accessControlConditions), 'access control conditions')}
+                className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
+              >
+                <Copy className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {secret.secretObject?.litNetwork && (
+          <div>
+            <label className="text-sm font-medium text-gray-900">Lit Network</label>
+            <div className="mt-1 relative">
+              <div className="bg-gray-50 rounded p-3 pr-10 font-mono text-sm break-all text-gray-900">
+                {secret.secretObject.litNetwork}
+              </div>
+              <button
+                onClick={() => copyToClipboard(secret.secretObject.litNetwork, 'network')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 hover:text-gray-900"
+              >
+                <Copy className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -93,7 +131,7 @@ const SecretsListPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-900">Secret Objects</h1>
-            <a 
+            <a
               href="/createSecrets"
               className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md transition-colors duration-200"
             >
