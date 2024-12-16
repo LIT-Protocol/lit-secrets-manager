@@ -9,6 +9,7 @@ export default function Secrets() {
   const [currentSecret, setCurrentSecret] = useState(null);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isNetworkChanging, setIsNetworkChanging] = useState(false);
   const [error, setError] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
   const [litActionCid, setLitActionCid] = useState("");
@@ -100,6 +101,8 @@ export default function Secrets() {
   useEffect(() => {
     const init = async () => {
       try {
+        setIsNetworkChanging(true);
+        setError("");
         const litNodeClient = new LitNodeClient({
           litNetwork: typeof window !== 'undefined'
             ? localStorage.getItem('selectedNetwork') || LitNetwork.DatilDev
@@ -110,10 +113,24 @@ export default function Secrets() {
         setLitNodeClient(litNodeClient);
       } catch (err) {
         setError("Failed to initialize: " + err.message);
+      } finally {
+        setIsNetworkChanging(false);
       }
     };
 
     init();
+
+    // Add network change listener
+    const handleNetworkChange = (event) => {
+      // Clear any previous errors
+      setError("");
+      init();
+    };
+    window.addEventListener('networkChange', handleNetworkChange);
+
+    return () => {
+      window.removeEventListener('networkChange', handleNetworkChange);
+    };
   }, []);
 
   const ResultBox = ({ title, content, label }) => (
@@ -190,6 +207,12 @@ export default function Secrets() {
             {error && (
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
                 {error}
+              </div>
+            )}
+
+            {isNetworkChanging && (
+              <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-700">
+                Connecting to new network...
               </div>
             )}
 
