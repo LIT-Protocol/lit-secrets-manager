@@ -22,8 +22,12 @@ export const NetworkSelector = () => {
   };
 
   return (
-    <div className="bg-orange-600 px-6 py-2">
+    <div className="bg-orange-600 px-6 py-2 flex items-center">
+      <label htmlFor="network-select" className="text-white mr-2 text-sm">
+        Lit Network
+      </label>
       <select
+        id="network-select"
         value={network}
         onChange={handleNetworkChange}
         className="bg-white text-gray-900 px-3 py-1 rounded-md text-sm"
