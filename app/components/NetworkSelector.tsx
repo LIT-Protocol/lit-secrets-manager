@@ -18,8 +18,6 @@ export const NetworkSelector = () => {
   const handleNetworkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newNetwork = e.target.value as NetworkType;
     setNetwork(newNetwork);
-    // Dispatch custom event for components that need to reinitialize
-    window.dispatchEvent(new CustomEvent('networkChange'));
   };
 
   return (

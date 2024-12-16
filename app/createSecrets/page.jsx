@@ -118,18 +118,6 @@ export default function Secrets() {
     };
 
     init();
-
-    // Add network change listener
-    const handleNetworkChange = (event) => {
-      // Clear any previous errors
-      setError("");
-      init();
-    };
-    window.addEventListener('networkChange', handleNetworkChange);
-
-    return () => {
-      window.removeEventListener('networkChange', handleNetworkChange);
-    };
   }, [network]);
 
   const ResultBox = ({ title, content, label }) => (
