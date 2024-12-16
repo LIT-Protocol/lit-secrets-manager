@@ -101,7 +101,9 @@ export default function Secrets() {
     const init = async () => {
       try {
         const litNodeClient = new LitNodeClient({
-          litNetwork: LitNetwork.DatilDev,
+          litNetwork: typeof window !== 'undefined'
+            ? localStorage.getItem('selectedNetwork') || LitNetwork.DatilDev
+            : LitNetwork.DatilDev,
           debug: false
         });
         await litNodeClient.connect();
