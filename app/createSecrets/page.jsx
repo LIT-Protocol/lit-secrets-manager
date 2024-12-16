@@ -38,9 +38,11 @@ export default function Secrets() {
       id: Date.now(),
       timestamp: new Date().toISOString(),
       litActionCid,
-      secretObject
+      secretObject,
+      accessControlConditions,  // Add access control conditions
+      litNetwork: network       // Add network information
     };
-    
+
     const updatedHistory = [...encryptedHistory, newSecret];
     setEncryptedHistory(updatedHistory);
     localStorage.setItem('secretsHistory', JSON.stringify(updatedHistory));
