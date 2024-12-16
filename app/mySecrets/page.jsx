@@ -33,8 +33,10 @@ const SecretsListPage = () => {
   const filteredSecrets = secrets.filter(secret =>
     secret.litActionCid.toLowerCase().includes(searchTerm.toLowerCase()) ||
     JSON.stringify(secret.secretObject).toLowerCase().includes(searchTerm.toLowerCase()) ||
-    JSON.stringify(secret.accessControlConditions).toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (secret.litNetwork && secret.litNetwork.toLowerCase().includes(searchTerm.toLowerCase()))
+    (secret.secretObject?.accessControlConditions &&
+      JSON.stringify(secret.secretObject.accessControlConditions).toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (secret.secretObject?.litNetwork &&
+      secret.secretObject.litNetwork.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const SecretCard = ({ secret }) => (
@@ -85,15 +87,15 @@ const SecretsListPage = () => {
           </div>
         </div>
 
-        {secret.accessControlConditions && (
+        {secret.secretObject?.accessControlConditions && (
           <div>
             <label className="text-sm font-medium text-gray-900">Access Control Conditions</label>
             <div className="mt-1 relative">
               <pre className="bg-gray-50 rounded p-3 pr-10 font-mono text-sm break-all whitespace-pre-wrap text-gray-900">
-                {JSON.stringify(secret.accessControlConditions, null, 2)}
+                {JSON.stringify(secret.secretObject.accessControlConditions, null, 2)}
               </pre>
               <button
-                onClick={() => copyToClipboard(JSON.stringify(secret.accessControlConditions), 'access control conditions')}
+                onClick={() => copyToClipboard(JSON.stringify(secret.secretObject.accessControlConditions), 'access control conditions')}
                 className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
               >
                 <Copy className="h-4 w-4" />
@@ -102,15 +104,15 @@ const SecretsListPage = () => {
           </div>
         )}
 
-        {secret.litNetwork && (
+        {secret.secretObject?.litNetwork && (
           <div>
             <label className="text-sm font-medium text-gray-900">Lit Network</label>
             <div className="mt-1 relative">
               <div className="bg-gray-50 rounded p-3 pr-10 font-mono text-sm break-all text-gray-900">
-                {secret.litNetwork}
+                {secret.secretObject.litNetwork}
               </div>
               <button
-                onClick={() => copyToClipboard(secret.litNetwork, 'network')}
+                onClick={() => copyToClipboard(secret.secretObject.litNetwork, 'network')}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 hover:text-gray-900"
               >
                 <Copy className="h-4 w-4" />

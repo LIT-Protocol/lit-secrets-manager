@@ -38,9 +38,7 @@ export default function Secrets() {
       id: Date.now(),
       timestamp: new Date().toISOString(),
       litActionCid,
-      secretObject,
-      accessControlConditions,  // Add access control conditions
-      litNetwork: network       // Add network information
+      secretObject
     };
 
     const updatedHistory = [...encryptedHistory, newSecret];
@@ -63,12 +61,12 @@ export default function Secrets() {
     try {
       setIsLoading(true);
       setError("");
-      
+
       const accessControlConditions = [
         {
           contractAddress: "ipfs://QmVhccY3ucrAsNx1LfGSMrYrBukDGKHgLtuCqygUzfTdTk",
           standardContractType: "LitAction",
-          chain: "ethereum", 
+          chain: "ethereum",
           method: "checkVal",
           parameters: [litActionCid],
           returnValueTest: {
@@ -85,10 +83,12 @@ export default function Secrets() {
         },
         litNodeClient
       );
-      
+
       const secretObject = {
         encryptedData: ciphertext,
-        dataToEncryptHash
+        dataToEncryptHash,
+        accessControlConditions,  // Include access control conditions
+        litNetwork: network       // Include network information
       };
 
       setCurrentSecret(secretObject);
