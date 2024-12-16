@@ -1,11 +1,19 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { LitNetwork } from "@lit-protocol/constants";
+
+// Using string literals for network values as required by LitNodeClient
+const NETWORKS = {
+  DATIL_DEV: 'datil-dev',
+  DATIL_TEST: 'datil-test',
+  DATIL: 'datil'
+} as const;
+
+type NetworkType = typeof NETWORKS[keyof typeof NETWORKS];
 
 type NetworkContextType = {
-  network: LitNetwork;
-  setNetwork: (network: LitNetwork) => void;
+  network: NetworkType;
+  setNetwork: (network: NetworkType) => void;
 };
 
 type NetworkProviderProps = {
@@ -15,7 +23,7 @@ type NetworkProviderProps = {
 const NetworkContext = createContext<NetworkContextType | undefined>(undefined);
 
 export function NetworkProvider({ children }: NetworkProviderProps) {
-  const [network, setNetwork] = useState<LitNetwork>(LitNetwork.DatilDev);
+  const [network, setNetwork] = useState<NetworkType>(NETWORKS.DATIL_DEV);
 
   return (
     <NetworkContext.Provider value={{ network, setNetwork }}>

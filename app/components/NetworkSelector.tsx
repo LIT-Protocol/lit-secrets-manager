@@ -1,14 +1,22 @@
 "use client";
 
 import React from 'react';
-import { LitNetwork } from "@lit-protocol/constants";
 import { useNetwork } from '../contexts/NetworkContext';
+
+// Using string literals for network values as required by LitNodeClient
+const NETWORKS = {
+  DATIL_DEV: 'datil-dev',
+  DATIL_TEST: 'datil-test',
+  DATIL: 'datil'
+} as const;
+
+type NetworkType = typeof NETWORKS[keyof typeof NETWORKS];
 
 export const NetworkSelector = () => {
   const { network, setNetwork } = useNetwork();
 
   const handleNetworkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newNetwork = e.target.value as LitNetwork;
+    const newNetwork = e.target.value as NetworkType;
     setNetwork(newNetwork);
     // Dispatch custom event for components that need to reinitialize
     window.dispatchEvent(new CustomEvent('networkChange'));
@@ -25,9 +33,9 @@ export const NetworkSelector = () => {
         onChange={handleNetworkChange}
         className="bg-white text-gray-900 px-3 py-1 rounded-md text-sm"
       >
-        <option value={LitNetwork.DatilDev}>Datil Dev</option>
-        <option value={LitNetwork.DatilTest}>Datil Test</option>
-        <option value={LitNetwork.Datil}>Datil</option>
+        <option value={NETWORKS.DATIL_DEV}>Datil Dev</option>
+        <option value={NETWORKS.DATIL_TEST}>Datil Test</option>
+        <option value={NETWORKS.DATIL}>Datil</option>
       </select>
     </div>
   );
