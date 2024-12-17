@@ -89,8 +89,9 @@ export default function Secrets() {
       const secretObject = {
         encryptedData: ciphertext,
         dataToEncryptHash,
-        accessControlConditions, // Include access control conditions
-        litNetwork: network, // Include network information
+        accessControlConditions,
+        litNetwork: network,
+        ipfsCid: litActionCid,
       };
 
       setCurrentSecret(secretObject);
