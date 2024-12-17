@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Plus, Search, Copy, Trash2 } from "lucide-react";
+import Tabs from "../components/Tabs";
+import { generateExampleCode } from "../utils/codeGenerator";
 
 const SecretsListPage = () => {
   const [secrets, setSecrets] = useState([]);
@@ -76,17 +78,48 @@ const SecretsListPage = () => {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-gray-900">Secret Object</label>
-          <div className="mt-1 relative">
-            <pre className="bg-gray-50 rounded p-3 pr-10 font-mono text-sm break-all whitespace-pre-wrap text-gray-900">
-              {JSON.stringify(secret.secretObject, null, 2)}
-            </pre>
-            <button
-              onClick={() => copyToClipboard(JSON.stringify(secret.secretObject), "secret object")}
-              className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
-            >
-              <Copy className="h-4 w-4" />
-            </button>
+          <label className="text-sm font-medium text-gray-900">Secret Details</label>
+          <div className="mt-1">
+            <Tabs
+              tabs={[
+                {
+                  label: "Secret Object",
+                  content: (
+                    <div className="relative">
+                      <pre className="bg-gray-50 rounded p-3 pr-10 font-mono text-sm break-all whitespace-pre-wrap text-gray-900">
+                        {JSON.stringify(secret.secretObject, null, 2)}
+                      </pre>
+                      <button
+                        onClick={() =>
+                          copyToClipboard(JSON.stringify(secret.secretObject), "secret object")
+                        }
+                        className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ),
+                },
+                {
+                  label: "Example Code",
+                  content: (
+                    <div className="relative">
+                      <pre className="bg-gray-50 rounded p-3 pr-10 font-mono text-sm break-all whitespace-pre-wrap text-gray-900">
+                        {generateExampleCode(secret.secretObject)}
+                      </pre>
+                      <button
+                        onClick={() =>
+                          copyToClipboard(generateExampleCode(secret.secretObject), "example code")
+                        }
+                        className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ),
+                },
+              ]}
+            />
           </div>
         </div>
 

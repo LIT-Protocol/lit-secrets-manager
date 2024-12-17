@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { LitNodeClient, encryptString } from "@lit-protocol/lit-node-client";
 import { useNetwork } from "../contexts/NetworkContext";
 import { Copy, Trash2 } from "lucide-react";
+import Tabs from "../components/Tabs";
+import { generateExampleCode } from "../utils/codeGenerator";
 
 export default function Secrets() {
   const { network } = useNetwork();
@@ -87,8 +89,9 @@ export default function Secrets() {
       const secretObject = {
         encryptedData: ciphertext,
         dataToEncryptHash,
-        accessControlConditions, // Include access control conditions
-        litNetwork: network, // Include network information
+        accessControlConditions,
+        litNetwork: network,
+        ipfsCid: litActionCid,
       };
 
       setCurrentSecret(secretObject);
@@ -227,21 +230,49 @@ export default function Secrets() {
             {currentSecret && (
               <div className="space-y-4">
                 <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-2">Secret Object:</h3>
-                  <div className="relative">
-                    <pre className="font-mono text-sm text-gray-900 break-all whitespace-pre-wrap">
-                      {JSON.stringify(currentSecret, null, 2)}
-                    </pre>
-                    <button
-                      onClick={() =>
-                        copyToClipboard(JSON.stringify(currentSecret), "secret object")
-                      }
-                      className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
-                      title="Copy secret object"
-                    >
-                      <Copy className="h-4 w-4 text-gray-800" />
-                    </button>
-                  </div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-2">Secret Details:</h3>
+                  <Tabs
+                    tabs={[
+                      {
+                        label: "Secret Object",
+                        content: (
+                          <div className="relative">
+                            <pre className="font-mono text-sm text-gray-900 break-all whitespace-pre-wrap">
+                              {JSON.stringify(currentSecret, null, 2)}
+                            </pre>
+                            <button
+                              onClick={() =>
+                                copyToClipboard(JSON.stringify(currentSecret), "secret object")
+                              }
+                              className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
+                              title="Copy secret object"
+                            >
+                              <Copy className="h-4 w-4 text-gray-800" />
+                            </button>
+                          </div>
+                        ),
+                      },
+                      {
+                        label: "Example Code",
+                        content: (
+                          <div className="relative">
+                            <pre className="font-mono text-sm text-gray-900 break-all whitespace-pre-wrap">
+                              {generateExampleCode(currentSecret)}
+                            </pre>
+                            <button
+                              onClick={() =>
+                                copyToClipboard(generateExampleCode(currentSecret), "example code")
+                              }
+                              className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
+                              title="Copy example code"
+                            >
+                              <Copy className="h-4 w-4 text-gray-800" />
+                            </button>
+                          </div>
+                        ),
+                      },
+                    ]}
+                  />
                 </div>
               </div>
             )}
@@ -281,10 +312,55 @@ export default function Secrets() {
                     <div className="font-mono text-sm text-gray-900 break-all bg-white p-2 rounded">
                       {item.litActionCid}
                     </div>
-                    <div className="font-semibold text-gray-900 mt-4">Secret Object:</div>
-                    <pre className="font-mono text-sm text-gray-900 break-all whitespace-pre-wrap bg-white p-3 rounded">
-                      {JSON.stringify(item.secretObject, null, 2)}
-                    </pre>
+                    <div className="font-semibold text-gray-900 mt-4">Secret Details:</div>
+                    <Tabs
+                      tabs={[
+                        {
+                          label: "Secret Object",
+                          content: (
+                            <div className="relative">
+                              <pre className="font-mono text-sm text-gray-900 break-all whitespace-pre-wrap bg-white p-3 rounded">
+                                {JSON.stringify(item.secretObject, null, 2)}
+                              </pre>
+                              <button
+                                onClick={() =>
+                                  copyToClipboard(
+                                    JSON.stringify(item.secretObject),
+                                    "secret object"
+                                  )
+                                }
+                                className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
+                                title="Copy secret object"
+                              >
+                                <Copy className="h-4 w-4 text-gray-800" />
+                              </button>
+                            </div>
+                          ),
+                        },
+                        {
+                          label: "Example Code",
+                          content: (
+                            <div className="relative">
+                              <pre className="font-mono text-sm text-gray-900 break-all whitespace-pre-wrap bg-white p-3 rounded">
+                                {generateExampleCode(item.secretObject)}
+                              </pre>
+                              <button
+                                onClick={() =>
+                                  copyToClipboard(
+                                    generateExampleCode(item.secretObject),
+                                    "example code"
+                                  )
+                                }
+                                className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
+                                title="Copy example code"
+                              >
+                                <Copy className="h-4 w-4 text-gray-800" />
+                              </button>
+                            </div>
+                          ),
+                        },
+                      ]}
+                    />
                   </div>
                 </div>
               ))}
