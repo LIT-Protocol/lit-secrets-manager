@@ -66,14 +66,14 @@ export default function Secrets() {
 
       const accessControlConditions = [
         {
-          contractAddress: "ipfs://QmVhccY3ucrAsNx1LfGSMrYrBukDGKHgLtuCqygUzfTdTk",
-          standardContractType: "LitAction",
+          contractAddress: "",
+          standardContractType: "",
           chain: "ethereum",
-          method: "checkVal",
-          parameters: [litActionCid],
+          method: "",
+          parameters: [":currentActionIpfsId"],
           returnValueTest: {
             comparator: "=",
-            value: "true",
+            value: litActionCid,
           },
         },
       ];
