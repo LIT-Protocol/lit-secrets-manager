@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { LitNodeClient, encryptString } from "@lit-protocol/lit-node-client";
 import { useNetwork } from "../contexts/NetworkContext";
 import { Copy, Trash2 } from "lucide-react";
-import Tabs from '../components/Tabs';
-import { generateExampleCode } from '../utils/codeGenerator';
+import Tabs from "../components/Tabs";
+import { generateExampleCode } from "../utils/codeGenerator";
 
 export default function Secrets() {
   const { network } = useNetwork();
@@ -240,14 +240,16 @@ export default function Secrets() {
                               {JSON.stringify(currentSecret, null, 2)}
                             </pre>
                             <button
-                              onClick={() => copyToClipboard(JSON.stringify(currentSecret), 'secret object')}
+                              onClick={() =>
+                                copyToClipboard(JSON.stringify(currentSecret), "secret object")
+                              }
                               className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
                               title="Copy secret object"
                             >
                               <Copy className="h-4 w-4 text-gray-800" />
                             </button>
                           </div>
-                        )
+                        ),
                       },
                       {
                         label: "Example Code",
@@ -257,15 +259,17 @@ export default function Secrets() {
                               {generateExampleCode(currentSecret)}
                             </pre>
                             <button
-                              onClick={() => copyToClipboard(generateExampleCode(currentSecret), 'example code')}
+                              onClick={() =>
+                                copyToClipboard(generateExampleCode(currentSecret), "example code")
+                              }
                               className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
                               title="Copy example code"
                             >
                               <Copy className="h-4 w-4 text-gray-800" />
                             </button>
                           </div>
-                        )
-                      }
+                        ),
+                      },
                     ]}
                   />
                 </div>
@@ -318,14 +322,19 @@ export default function Secrets() {
                                 {JSON.stringify(item.secretObject, null, 2)}
                               </pre>
                               <button
-                                onClick={() => copyToClipboard(JSON.stringify(item.secretObject), 'secret object')}
+                                onClick={() =>
+                                  copyToClipboard(
+                                    JSON.stringify(item.secretObject),
+                                    "secret object"
+                                  )
+                                }
                                 className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
                                 title="Copy secret object"
                               >
                                 <Copy className="h-4 w-4 text-gray-800" />
                               </button>
                             </div>
-                          )
+                          ),
                         },
                         {
                           label: "Example Code",
@@ -335,15 +344,20 @@ export default function Secrets() {
                                 {generateExampleCode(item.secretObject)}
                               </pre>
                               <button
-                                onClick={() => copyToClipboard(generateExampleCode(item.secretObject), 'example code')}
+                                onClick={() =>
+                                  copyToClipboard(
+                                    generateExampleCode(item.secretObject),
+                                    "example code"
+                                  )
+                                }
                                 className="absolute top-2 right-2 p-2 hover:bg-orange-100 rounded"
                                 title="Copy example code"
                               >
                                 <Copy className="h-4 w-4 text-gray-800" />
                               </button>
                             </div>
-                          )
-                        }
+                          ),
+                        },
                       ]}
                     />
                   </div>

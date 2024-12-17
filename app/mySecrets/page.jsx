@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Plus, Search, Copy, Trash2 } from "lucide-react";
-import Tabs from '../components/Tabs';
-import { generateExampleCode } from '../utils/codeGenerator';
+import Tabs from "../components/Tabs";
+import { generateExampleCode } from "../utils/codeGenerator";
 
 const SecretsListPage = () => {
   const [secrets, setSecrets] = useState([]);
@@ -90,13 +90,15 @@ const SecretsListPage = () => {
                         {JSON.stringify(secret.secretObject, null, 2)}
                       </pre>
                       <button
-                        onClick={() => copyToClipboard(JSON.stringify(secret.secretObject), 'secret object')}
+                        onClick={() =>
+                          copyToClipboard(JSON.stringify(secret.secretObject), "secret object")
+                        }
                         className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
                       >
                         <Copy className="h-4 w-4" />
                       </button>
                     </div>
-                  )
+                  ),
                 },
                 {
                   label: "Example Code",
@@ -106,14 +108,16 @@ const SecretsListPage = () => {
                         {generateExampleCode(secret.secretObject)}
                       </pre>
                       <button
-                        onClick={() => copyToClipboard(generateExampleCode(secret.secretObject), 'example code')}
+                        onClick={() =>
+                          copyToClipboard(generateExampleCode(secret.secretObject), "example code")
+                        }
                         className="absolute right-2 top-2 text-gray-800 hover:text-gray-900"
                       >
                         <Copy className="h-4 w-4" />
                       </button>
                     </div>
-                  )
-                }
+                  ),
+                },
               ]}
             />
           </div>

@@ -1,5 +1,5 @@
-"use client"
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 export default function Tabs({ tabs }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -14,9 +14,10 @@ export default function Tabs({ tabs }) {
               onClick={() => setActiveTab(index)}
               className={`
                 py-2 px-4 border-b-2 font-medium text-sm
-                ${activeTab === index
-                  ? 'border-orange-500 text-orange-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                ${
+                  activeTab === index
+                    ? "border-orange-500 text-orange-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }
               `}
             >
@@ -25,9 +26,7 @@ export default function Tabs({ tabs }) {
           ))}
         </nav>
       </div>
-      <div className="mt-4">
-        {tabs[activeTab].content}
-      </div>
+      <div className="mt-4">{tabs[activeTab].content}</div>
     </div>
   );
 }
